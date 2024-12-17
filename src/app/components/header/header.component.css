@@ -1,0 +1,54 @@
+/* src/app/components/header/header.component.css */
+
+/* Definindo variáveis de cores e tipografia */
+:root {
+    --primary-bg-color: #f8f9fa;
+    --primary-color: #007bff;
+    --text-color: #333333;
+    --hover-color: #0056b3;
+    --font-family: 'Arial', sans-serif;
+    --transition-duration: 0.3s;
+  }
+  
+  /* Estilo da Navbar */
+  .navbar {
+    background-color: var(--primary-bg-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand {
+    color: var(--primary-color);
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .navbar-brand:hover {
+    color: var(--hover-color);
+  }
+  
+  .navbar-nav .nav-link {
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color var(--transition-duration), color var(--transition-duration);
+  }
+  
+  .navbar-nav .nav-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .navbar-toggler-icon {
+    background-color: var(--primary-color);
+  }
+  
+  @media (max-width: 768px) {
+    .navbar-nav {
+      text-align: center;
+    }
+  }
+  

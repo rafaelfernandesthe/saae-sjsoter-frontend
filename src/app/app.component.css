@@ -1,0 +1,34 @@
+/* src/styles.css ou src/app/app.component.css */
+
+/* Centralização e Layout */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Para garantir que o conteúdo ocupe 100% da altura da tela */
+  }
+  
+  .main-content {
+    display: flex;
+    flex: 1; /* Para que o conteúdo principal ocupe o restante da tela */
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    align-items: flex-start; /* Alinha o conteúdo ao topo */
+    padding: 2rem;
+  }
+  
+  .container-fluid {
+    width: 100%;
+    max-width: 1200px; /* Tamanho máximo para o conteúdo */
+  }
+  
+  @media (max-width: 768px) {
+    .main-content {
+      flex-direction: column; /* Para dispositivos menores, organiza o conteúdo em coluna */
+      padding: 1rem;
+    }
+  }
+  

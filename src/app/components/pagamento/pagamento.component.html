@@ -1,0 +1,72 @@
+<!-- src/app/components/pagamentos/pagamento.component.html -->
+<div class="container mt-5">
+    <h2>Registrar Pagamento</h2>
+  
+    <form [formGroup]="pagamentoForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="id" class="form-label">ID do Pagamento</label>
+        <input type="number" class="form-control" id="id" formControlName="id" placeholder="ID do pagamento">
+      </div>
+  
+      <div class="mb-3">
+        <label for="faturaId" class="form-label">ID da Fatura</label>
+        <input type="number" class="form-control" id="faturaId" formControlName="faturaId" placeholder="ID da fatura">
+      </div>
+  
+      <div class="mb-3">
+        <label for="valorPago" class="form-label">Valor Pago</label>
+        <input type="number" class="form-control" id="valorPago" formControlName="valorPago" placeholder="Valor pago">
+      </div>
+  
+      <div class="mb-3">
+        <label for="dataPagamento" class="form-label">Data do Pagamento</label>
+        <input type="date" class="form-control" id="dataPagamento" formControlName="dataPagamento">
+      </div>
+  
+      <div class="mb-3">
+        <label for="metodo" class="form-label">Método de Pagamento</label>
+        <select class="form-select" id="metodo" formControlName="metodo">
+          <option value="pix">Pix</option>
+          <option value="boleto">Boleto</option>
+          <option value="cartao">Cartão</option>
+        </select>
+      </div>
+  
+      <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-select" id="status" formControlName="status">
+          <option value="pendente">Pendente</option>
+          <option value="concluido">Concluído</option>
+        </select>
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="pagamentoForm.invalid">Registrar Pagamento</button>
+    </form>
+  
+    <hr>
+  
+    <h3>Pagamentos Registrados</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fatura ID</th>
+          <th>Valor Pago</th>
+          <th>Data do Pagamento</th>
+          <th>Método</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pagamento of pagamentos">
+          <td>{{ pagamento.id }}</td>
+          <td>{{ pagamento.faturaId }}</td>
+          <td>{{ pagamento.valorPago | currency }}</td>
+          <td>{{ pagamento.dataPagamento | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ pagamento.metodo }}</td>
+          <td>{{ pagamento.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
