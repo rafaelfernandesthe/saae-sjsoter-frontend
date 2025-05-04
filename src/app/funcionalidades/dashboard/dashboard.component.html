@@ -1,0 +1,54 @@
+<mat-card>
+    <header class="dashboard-header">
+      <h1>Dashboard</h1>
+      <div class="filters">
+        <mat-form-field appearance="outline">
+          <mat-label>Mês</mat-label>
+          <mat-select [(ngModel)]="mesSelecionado" (selectionChange)="atualizarDashboard()">
+            <mat-option *ngFor="let mes of meses" [value]="mes.valor">{{ mes.nome }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Ano</mat-label>
+          <input matInput type="number" [(ngModel)]="anoSelecionado" (input)="atualizarDashboard()" />
+        </mat-form-field>
+      </div>
+    </header>
+    <mat-card-content>
+      <!-- Indicadores -->
+      <div class="indicators">
+        <mat-card class="indicator">
+          <h2>{{ numeroImoveis }}</h2>
+          <p>Imóveis no Mês</p>
+        </mat-card>
+        <mat-card class="indicator">
+          <h2>{{ numeroImoveisIsentos }}</h2>
+          <p>Imóveis com Isenção</p>
+        </mat-card>
+        <mat-card class="indicator">
+          <h2>{{ numeroFaturasGeradas }}</h2>
+          <p>Faturas Geradas</p>
+        </mat-card>
+        <mat-card class="indicator">
+          <h2>{{ numeroOrdensAbertas }}</h2>
+          <p>Ordens de Serviço Abertas</p>
+        </mat-card>
+      </div>
+  
+      <!-- Gráficos -->
+      <div class="charts">
+        <mat-card>
+          <h3>Valores Pendentes/Vencidos vs Pagos</h3>
+          <canvas id="graficoValores"></canvas>
+        </mat-card>
+        <mat-card>
+          <h3>Contas por Status e Mês/Referência</h3>
+          <canvas id="graficoStatus"></canvas>
+        </mat-card>
+        <mat-card>
+          <h3>Faturas Geradas por Mês/Referência</h3>
+          <canvas id="graficoFaturas"></canvas>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>

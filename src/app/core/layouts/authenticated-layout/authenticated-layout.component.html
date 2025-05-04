@@ -1,0 +1,27 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" class="sidenav" opened>
+      <app-barra-navegacao></app-barra-navegacao>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <button class="menu-icon-button" mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon class="menu-icon">{{sidenav.opened ? 'menu_open' : 'menu'}}</mat-icon>
+          <span class="menu-icon-text">Menu</span>
+        </button>
+        <span class="system-title">SAAE - Sistema de Controle de Contas</span>
+        <span class="spacer"></span>
+        <button class="menu-icon-button" mat-icon-button (click)="logout()">
+            <mat-icon class="menu-icon">logout</mat-icon>
+            <span class="menu-icon-text">Sair</span>
+        </button>
+      </mat-toolbar>
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
+      <footer class="footer">
+        <p>&copy; {{getDate() | date: 'yyyy'}} - SAAE - Sistema de Controle de Contas</p>
+      </footer>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

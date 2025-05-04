@@ -1,0 +1,94 @@
+<mat-card>
+  <header class="list-header">
+    <h1>Lista de Imóveis</h1>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="adicionarImovel()">
+        <mat-icon>add</mat-icon> Adicionar Imóvel
+      </button>
+    </div>
+  </header>
+  <mat-card-content>
+    <!-- Filtros -->
+    <div class="filters">
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo</mat-label>
+        <mat-select [(ngModel)]="filtros.tipo">
+          <mat-option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Rua</mat-label>
+        <input matInput [(ngModel)]="filtros.rua" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Número</mat-label>
+        <input matInput [(ngModel)]="filtros.numero" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Bairro</mat-label>
+        <input matInput [(ngModel)]="filtros.bairro" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Proprietário</mat-label>
+        <input matInput [(ngModel)]="filtros.proprietario" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>CPF/CNPJ</mat-label>
+        <input matInput [(ngModel)]=" filtros.cpfCnpj" />
+      </mat-form-field>
+      <div class="filter-actions">
+        <button mat-raised-button color="primary" (click)="aplicarFiltros()">Consultar</button>
+        <button mat-raised-button color="warn" (click)="limparFiltros()">Limpar</button>
+      </div>
+    </div>
+
+    <!-- Tabela -->
+    <table mat-table [dataSource]="imoveis" class="mat-elevation-z8">
+      <!-- Colunas da tabela -->
+      <ng-container matColumnDef="tipo">
+        <th mat-header-cell *matHeaderCellDef> Tipo </th>
+        <td mat-cell *matCellDef="let imovel"> {{ imovel.tipo }} </td>
+      </ng-container>
+      <ng-container matColumnDef="rua">
+        <th mat-header-cell *matHeaderCellDef> Rua </th>
+        <td mat-cell *matCellDef="let imovel"> {{ imovel.rua }} </td>
+      </ng-container>
+      <ng-container matColumnDef="numero">
+        <th mat-header-cell *matHeaderCellDef> Número </th>
+        <td mat-cell *matCellDef="let imovel"> {{ imovel.numero }} </td>
+      </ng-container>
+      <ng-container matColumnDef="bairro">
+        <th mat-header-cell *matHeaderCellDef> Bairro </th>
+        <td mat-cell *matCellDef="let imovel"> {{ imovel.bairro }} </td>
+      </ng-container>
+      <ng-container matColumnDef="proprietario">
+        <th mat-header-cell *matHeaderCellDef> Proprietário </th>
+        <td mat-cell *matCellDef="let imovel"> {{ imovel.nome }} </td>
+      </ng-container>
+      <ng-container matColumnDef="cpfCnpj">
+        <th mat-header-cell *matHeaderCellDef> CPF/CNPJ </th>
+        <td mat-cell *matCellDef="let imovel"> {{ formatacaoService.formatarCpfCnpj(imovel.cpf_cnpj) }} </td>
+      </ng-container>
+      <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef> Descrição </th>
+        <td mat-cell *matCellDef="let imovel"> {{ imovel.descricao }} </td>
+      </ng-container>
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let imovel">
+          <button mat-icon-button matTooltip="Atualizar Cadastro" (click)="atualizarCadastro(imovel)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Cabeçalho e Linhas -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Paginação -->
+    <mat-paginator [length]="totalRegistros" [pageSize]="10" (page)="carregarPagina($event)">
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

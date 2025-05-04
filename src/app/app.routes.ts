@@ -1,23 +1,69 @@
-import { provideRouter, Routes } from '@angular/router';
-
-import { LoginComponent } from './pages/login/login/login.component';
-import { ListaImoveisComponent } from './components/imoveis/lista-imoveis/lista-imoveis.component';
-import { PerfilUsuarioComponent } from './components/perfil/perfil-usuario/perfil-usuario.component';
-import { PagamentoComponent } from './components/pagamento/pagamento.component';
-import { CadastroImoveisComponent } from './components/imoveis/cadastro-imoveis/cadastro-imoveis.component';
-import { DashboardComponent } from './pages/dashboard/dashboard/dashboard.component';
-
+import { Routes } from '@angular/router';
+import { authGuard } from './core/autenticacao/auth.guard';
+import { AuthenticatedLayoutComponent } from './core/layouts/authenticated-layout/authenticated-layout.component';
 
 export const appRoutes: Routes = [
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
-    { path: 'login', component: LoginComponent },
-    { path: 'dashboard', component: DashboardComponent },
-    { path: 'perfil', component: PerfilUsuarioComponent },
-    { path: 'imoveis/cadastro', component: CadastroImoveisComponent },
-    { path: 'imoveis/lista', component: ListaImoveisComponent },
-    { path: 'pagamentos', component: PagamentoComponent },
-    { path: '**', redirectTo: '/login' }
-  ];
-  
-  // Fornecer o roteador com as rotas definidas
-  export const appRouterProviders = provideRouter(appRoutes);
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./funcionalidades/login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: '',
+    component: AuthenticatedLayoutComponent, // Usa o layout autenticado
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        loadChildren: () =>
+          import('./funcionalidades/dashboard/dashboard.module').then((m) => m.DashboardModule),
+      },
+      {
+        path: 'usuarios',
+        loadChildren: () =>
+          import('./funcionalidades/usuarios/usuarios.module').then((m) => m.UsuariosModule),
+      },
+      {
+        path: 'imoveis',
+        loadChildren: () =>
+          import('./funcionalidades/imoveis/imoveis.module').then((m) => m.ImoveisModule),
+      },
+      {
+        path: 'beneficios',
+        loadChildren: () =>
+          import('./funcionalidades/beneficios/beneficios.module').then((m) => m.BeneficiosModule),
+      },
+      {
+        path: 'configuracao-taxas-impostos',
+        loadChildren: () =>
+          import('./funcionalidades/configuracao-taxas-impostos/configuracao-taxas-impostos.module').then(
+            (m) => m.ConfiguracaoTaxasImpostosModule
+          ),
+      },
+      {
+        path: 'contas',
+        loadChildren: () =>
+          import('./funcionalidades/contas/contas.module').then((m) => m.ContasModule),
+      },
+      {
+        path: 'relatorios',
+        loadChildren: () =>
+          import('./funcionalidades/relatorios/relatorios.module').then((m) => m.RelatoriosModule),
+      },
+      {
+        path: 'ordem-servico',
+        loadChildren: () =>
+          import('./funcionalidades/ordem-servico/ordem-servico.module').then((m) => m.OrdemServicoModule),
+      },
+    ],
+  },
+  {
+    path: '**',
+    redirectTo: 'dashboard',
+  },
+];

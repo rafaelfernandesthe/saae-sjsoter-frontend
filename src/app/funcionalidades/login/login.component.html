@@ -1,0 +1,24 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <div class="login-header">
+      <img src="assets/images/logo.png" alt="Logo do Sistema" class="login-logo" />
+      <mat-card-title>SAAE - Serviço Autônomo de Água e Esgoto</mat-card-title>
+      <mat-card-subtitle>Faça login para acessar o sistema</mat-card-subtitle>
+    </div>
+    <mat-card-content>
+      <form (ngSubmit)="fazerLogin()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Usuário</mat-label>
+          <input matInput [(ngModel)]="usuario" name="usuario" required aria-label="Usuário" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" [(ngModel)]="senha" name="senha" required aria-label="Senha" />
+        </mat-form-field>
+        <div class="login-actions">
+          <button mat-raised-button color="primary" type="submit" aria-label="Entrar">Entrar</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,73 @@
+<mat-card>
+  <header class="list-header">
+    <h1>Lista de Usuários</h1>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="adicionarUsuario()">
+        <mat-icon>add</mat-icon> Adicionar Usuário
+      </button>
+    </div>
+  </header>
+  <mat-card-content>
+    <table mat-table [dataSource]="usuarios" class="mat-elevation-z8">
+
+      <!-- Nome Column -->
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef> Nome </th>
+        <td mat-cell *matCellDef="let usuario"> {{ usuario.nome }} </td>
+      </ng-container>
+
+      <!-- CPF/CNPJ Column -->
+      <ng-container matColumnDef="cpf">
+        <th mat-header-cell *matHeaderCellDef> CPF/CNPJ </th>
+        <td mat-cell *matCellDef="let usuario"> {{ formatacaoService.formatarCpfCnpj(usuario.cpf) }} </td>
+      </ng-container>
+
+      <!-- Telefone Column -->
+      <ng-container matColumnDef="telefone">
+        <th mat-header-cell *matHeaderCellDef> Telefone </th>
+        <td mat-cell *matCellDef="let usuario"> {{ formatacaoService.formatarTelefone(usuario.telefone) }} </td>
+      </ng-container>
+
+      <!-- Telefone Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let usuario"> {{ usuario.email }} </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let usuario"> {{ usuario.status }} </td>
+      </ng-container>
+
+      <!-- Último Login Column -->
+      <ng-container matColumnDef="ultimoLogin">
+        <th mat-header-cell *matHeaderCellDef> Último Login </th>
+        <td mat-cell *matCellDef="let usuario"> {{ usuario.ultimoLogin | date:'dd/MM/yyyy HH:mm' }} </td>
+      </ng-container>
+
+      <!-- Permissão Column -->
+      <ng-container matColumnDef="permissao">
+        <th mat-header-cell *matHeaderCellDef> Permissão </th>
+        <td mat-cell *matCellDef="let usuario"> {{ usuario.permissao }} </td>
+      </ng-container>
+
+      <!-- Ações Column -->
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let usuario">
+          <button mat-icon-button matTooltip="Resetar Senha" (click)="confirmarAcao('resetar senha', usuario)">
+            <mat-icon>lock_reset</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="{{ usuario.status === 'Ativo' ? 'Inativar' : 'Ativar' }}" (click)="confirmarAcao(usuario.status === 'Ativo' ? 'inativar' : 'ativar', usuario)">
+            <mat-icon>{{ usuario.status === 'Ativo' ? 'block' : 'check_circle' }}</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Table Header and Rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

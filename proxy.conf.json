@@ -1,0 +1,9 @@
+{
+    "/castlemock": {
+      "target": "http://localhost:9090",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
+  
