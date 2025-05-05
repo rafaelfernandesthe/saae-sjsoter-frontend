@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { BackendApiService } from '../../../../compartilhado/servicos/backendapi.service';
 import { FormatacaoService } from '../../../../compartilhado/servicos/formatacao.service';
 
 @Component({
@@ -44,7 +44,7 @@ export class ListaImoveisComponent {
   tipos = ['CASA', 'PONTO_COMERCIAL', 'IGREJA', 'TERRENO', 'POSTO_DE_COMBUSTIVEL'];
   displayedColumns: string[] = ['tipo', 'rua', 'numero', 'bairro', 'proprietario', 'cpfCnpj', 'descricao', 'acoes'];
 
-  constructor(private http: HttpClient, protected formatacaoService: FormatacaoService) {}
+  constructor(protected formatacaoService: FormatacaoService, protected backendApiService: BackendApiService) {}
 
   ngOnInit(): void {
     this.carregarImoveis(0, 10);
@@ -55,16 +55,18 @@ export class ListaImoveisComponent {
       ...this.filtros,
       page: pagina.toString(),
       size: tamanho.toString(),
+      sort: 'id,asc'
     };
 
-    this.http.get<any>('/castlemock/mock/rest/project/k7HONY/application/Qg7XPB/imoveis', { params }).subscribe((res) => {
-      this.imoveis = res;
-      this.totalRegistros = res.length; 
+    this.backendApiService.getImoveis(params).subscribe((res) => {
+      this.imoveis = res.content;
+      this.totalRegistros = res.totalElements; 
     });
+
   }
 
   aplicarFiltros(): void {
-    console.log('Filtros aplicados:', this.filtros);
+    this.carregarImoveis(0, 10);
   }
 
   limparFiltros(): void {
