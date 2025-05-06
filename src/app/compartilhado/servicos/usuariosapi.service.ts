@@ -1,0 +1,31 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import path from 'path';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UsuariosApiService {
+
+  pathBase = '/api/usuarios';
+
+  constructor(private http: HttpClient) { }
+
+  salvarUsuarios(usuario: any): Observable<any> {
+    return this.http.post<any>(this.pathBase, usuario);
+  }
+
+  atualizarUsuario(usuario: any): Observable<any> {
+    return this.http.put<any>(`${this.pathBase}/${usuario.id}`, usuario);
+  }
+
+  getUsuarios(params: any): Observable<any> {
+    return this.http.get<any>(this.pathBase, { params });
+  }
+
+  getUsuariosById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.pathBase}/${id}`);
+  }
+  
+}

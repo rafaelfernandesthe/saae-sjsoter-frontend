@@ -6,25 +6,37 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
+import { AuthService } from '../../core/autenticacao/auth.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   imports: [CommonModule, MatFormFieldModule, MatInputModule, FormsModule, MatCardModule, MatFormFieldModule, MatButtonModule],
+  providers: [AuthService]
 })
 export class LoginComponent {
-  usuario = '';
+  email = '';
   senha = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   fazerLogin(): void {
-    if (this.usuario === 'admin' && this.senha === '123456') {
-      localStorage.setItem('usuario', JSON.stringify({ nome: 'admin', perfil: 'ADMIN' }));
-      this.router.navigate(['/dashboard']);
-    } else {
-      alert('Usuário ou senha inválidos!');
-    }
+    this.authService.login(this.email, this.senha).subscribe({
+      next: (res: any) => {
+        const token = res.token || res;
+        const payload: any = jwtDecode(token);
+        const usuario = payload.sub;
+        const nome = payload.nome;
+        const perfil = payload.perfil;
+
+        localStorage.setItem('usuario', JSON.stringify({ usuario, nome, perfil, token }));
+        this.router.navigate(['/dashboard']);
+      },
+      error: () => {
+        alert('Usuário ou senha inválidos!');
+      }
+    });
   }
 }

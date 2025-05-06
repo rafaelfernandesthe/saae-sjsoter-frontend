@@ -21,10 +21,15 @@
         <mat-label>Email</mat-label>
         <input matInput [(ngModel)]="usuario.email" name="email" />
       </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Senha</mat-label>
+        <input type="password" matInput [(ngModel)]="usuario.senha" name="senha" />
+      </mat-form-field>
   
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Permissão</mat-label>
-        <mat-select [(ngModel)]="usuario.permissao" name="permissao">
+        <mat-select [(ngModel)]="usuario.tipo" name="permissao">
           <mat-option *ngFor="let p of permissoes" [value]="p">{{ p }}</mat-option>
         </mat-select>
       </mat-form-field>

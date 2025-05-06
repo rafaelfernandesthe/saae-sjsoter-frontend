@@ -23,6 +23,7 @@ export class BarraNavegacaoComponent {
   userProfile: string = 'ADMIN'; // Mock do perfil do usuário logado
 
   isAuthorized(allowedProfiles: string[]): boolean {
-    return allowedProfiles.includes(this.userProfile);
+    const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+    return allowedProfiles.includes(usuario.perfil);
   }
 }

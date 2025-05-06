@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -7,6 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { FormatacaoService } from '../../../../compartilhado/servicos/formatacao.service';
 import { Router } from '@angular/router';
+import { UsuariosApiService } from '../../../../compartilhado/servicos/usuariosapi.service';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-lista-usuarios',
@@ -18,21 +21,70 @@ import { Router } from '@angular/router';
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
-    MatButtonModule]
+    MatButtonModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule
+  ]
   })
-export class ListaUsuariosComponent {
+export class ListaUsuariosComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(protected formatacaoService: FormatacaoService, private router: Router) { }
+  constructor(protected formatacaoService: FormatacaoService, private router: Router, private usuariosApiService: UsuariosApiService) { }
 
-  // Dados mockados de usuários
-  usuarios = [
-    { nome: 'João Silva', cpf: '12345678901', telefone: '99987654322', email: 'email1@exemplo.com', status: 'Ativo', ultimoLogin: new Date(), permissao: 'ADMIN' },
-    { nome: 'Maria Oliveira', cpf: '98765432100', telefone: '99912345678', email: 'email2@exemplo.com',status: 'Inativo', ultimoLogin: new Date(), permissao: 'SAAE' },
-    { nome: 'Carlos Santos', cpf: '45678912300', telefone: '99998765432', email: 'email3@exemplo.com',status: 'Ativo', ultimoLogin: new Date(), permissao: 'PREFEITURA' },
-  ];
-
+  usuarios: any[] = [];
+  totalRegistros = 0;
+  carregando = false;
+  filtros = {
+    nome: ''
+  };
   // Colunas exibidas na tabela
   displayedColumns: string[] = ['nome', 'cpf', 'telefone', 'email', 'status', 'ultimoLogin', 'permissao', 'acoes'];
+
+  ngOnInit(): void {
+    this.carregarUsuarios(0, 10);
+  }
+
+  carregarUsuarios(pagina: number, tamanho: number): void {
+    const params = {
+      ...this.filtros,
+      page: pagina.toString(),
+      size: tamanho.toString(),
+      sort: 'id,asc'
+    };
+
+    this.carregando = true;
+    this.usuariosApiService.getUsuarios(params).subscribe({
+      next: (res) => {
+        this.usuarios = res.content;
+        this.totalRegistros = res.totalElements;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar usuarios', error);
+      },
+      complete: () => {
+        this.carregando = false;
+      }
+    });
+  }
+
+  aplicarFiltros(): void {
+    this.carregarUsuarios(0, 10);
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+  }
+
+  limparFiltros(): void {
+    this.filtros = {
+      nome: ''
+    };
+   
+    this.aplicarFiltros();
+  }
+
+  carregarPagina(event: PageEvent): void {
+    this.carregarUsuarios(event.pageIndex, event.pageSize);
+  }
 
   adicionarUsuario(): void {
     console.log('Adicionar usuário clicado');

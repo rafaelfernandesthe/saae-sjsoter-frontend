@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { ImoveisApiService } from '../../../../compartilhado/servicos/imoveisapi.service';
 
 @Component({
   selector: 'app-detalhe-imovel',
@@ -39,43 +40,50 @@ export class DetalheImovelComponent implements OnInit {
   };
 
   tipos = ['CASA', 'PONTO_COMERCIAL', 'IGREJA', 'TERRENO', 'POSTO_DE_COMBUSTIVEL'];
-  modoEdicao = false;
+  modoEdicao = false
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-    public formatacaoService: FormatacaoService
+    public formatacaoService: FormatacaoService,
+    private imoveisApiService: ImoveisApiService
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    if (id && Number(id) > 0) {
       this.modoEdicao = true;
       this.carregarImovel(id);
     }
   }
 
   carregarImovel(id: string): void {
-    this.http.get<any>(`/castlemock/mock/rest/project/k7HONY/application/Qg7XPB/imoveis/${id}`)
-      .subscribe((res) => {
+    this.imoveisApiService.getImoveisById(Number(id)).subscribe({
+      next: (res) => {
         this.imovel = res;
-      });
+      },
+      error: (error) => console.error('Erro ao carregar imóvel', error)
+    });
   }
 
   salvarImovel(): void {
     if (this.modoEdicao && this.imovel.id) {
-      // Atualizar imóvel existente
-      this.http.put<any>(`/api/imoveis/${this.imovel.id}`, this.imovel).subscribe(
-        () => this.router.navigate(['/imoveis']),
-        (error) => console.error('Erro ao atualizar imóvel', error)
-      );
+      this.imoveisApiService.atualizarImovel(this.imovel).subscribe({
+        next: (res) => {
+          alert("Imóvel atualizado com sucesso.");
+          this.router.navigate(['/imoveis']);
+        },
+        error: (error) => console.error('Erro ao atualizar imóvel', error)
+      });
     } else {
-      // Criar novo imóvel
-      this.http.post<any>('/api/imoveis', this.imovel).subscribe(
-        () => this.router.navigate(['/imoveis']),
-        (error) => console.error('Erro ao criar imóvel', error)
-      );
+      this.imoveisApiService.salvarImoveis(this.imovel).subscribe({
+        next: (res) => {
+          alert("Imóvel Salvo com sucesso.");
+          this.router.navigate(['/imoveis'])
+        },
+        error: (error) => console.error('Erro ao salvar imóvel', error)
+      });
     }
   }
 
@@ -83,11 +91,4 @@ export class DetalheImovelComponent implements OnInit {
     this.router.navigate(['/imoveis']);
   }
 
-  formatarCpfCnpj(cpfCnpj: string): string {
-    return this.formatacaoService.formatarCpfCnpj(cpfCnpj);
-  }
-
-  formatarTelefone(telefone: string): string {
-    return this.formatacaoService.formatarTelefone(telefone);
-  }
 }

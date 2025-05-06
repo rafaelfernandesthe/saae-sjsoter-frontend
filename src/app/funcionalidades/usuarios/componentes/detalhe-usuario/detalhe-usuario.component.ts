@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UsuariosApiService } from '../../../../compartilhado/servicos/usuariosapi.service';
 
 @Component({
   selector: 'app-detalhe-usuario',
@@ -23,7 +24,7 @@ import { Router } from '@angular/router';
     MatButtonModule
   ]
 })
-export class DetalheUsuarioComponent {
+export class DetalheUsuarioComponent implements OnInit {
   usuario: any = {
     nome: '',
     cpf: '',
@@ -33,13 +34,46 @@ export class DetalheUsuarioComponent {
     status: 'Ativo'
   };
 
+  modoEdicao = false;
   permissoes: string[] = ['ADMIN', 'SAAE', 'PREFEITURA'];
 
-  constructor(private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private usuariosApiService: UsuariosApiService) {}
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id && Number(id) > 0) {
+      this.modoEdicao = true;
+      this.carregarUsuario(id);
+    }
+  }
+
+  carregarUsuario(id: string): void {
+    this.usuariosApiService.getUsuariosById(Number(id)).subscribe({
+      next: (res) => {
+        this.usuario = res;
+      },
+      error: (error) => console.error('Erro ao carregar usuario', error)
+    });
+  }
+  
 
   salvar(): void {
-    console.log('Usuário salvo:', this.usuario);
-    this.router.navigate(['/usuarios']);
+    if (this.usuario.id && this.usuario.id > 0) {
+      this.usuariosApiService.atualizarUsuario(this.usuario).subscribe({
+        next: (res) => {
+          alert("Usuario atualizado com sucesso.");
+          this.router.navigate(['/usuarios']);
+        },
+        error: (error) => console.error('Erro ao atualizar usuario', error)
+      });
+    } else {
+      this.usuariosApiService.salvarUsuarios(this.usuario).subscribe({
+        next: (res) => {
+          alert("Usuario Salvo com sucesso.");
+          this.router.navigate(['/usuarios'])
+        },
+        error: (error) => console.error('Erro ao salvar usuário', error)
+      });
+    }
   }
 
   cancelar(): void {
