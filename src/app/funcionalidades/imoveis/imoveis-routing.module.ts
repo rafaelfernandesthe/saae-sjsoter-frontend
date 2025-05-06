@@ -6,6 +6,7 @@ import { DetalheImovelComponent } from './componentes/detalhe-imovel/detalhe-imo
 const routes: Routes = [
   { path: '', component: ListaImoveisComponent },
   { path: 'novo', component: DetalheImovelComponent },
+  { path: ':id', component: DetalheImovelComponent },
 ];
 
 @NgModule({

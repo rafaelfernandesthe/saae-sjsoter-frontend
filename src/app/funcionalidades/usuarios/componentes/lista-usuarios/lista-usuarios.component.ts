@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 import { UsuariosApiService } from '../../../../compartilhado/servicos/usuariosapi.service';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-lista-usuarios',
@@ -17,11 +20,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrls: ['./lista-usuarios.component.scss'],
   imports: [
     CommonModule,
+    FormsModule,
     MatTableModule,
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatPaginatorModule,
     MatProgressSpinnerModule
   ]
@@ -95,8 +101,23 @@ export class ListaUsuariosComponent implements OnInit {
   confirmarAcao(acao: string, usuario: any): void {
     const confirmacao = confirm(`Você deseja realmente ${acao} o usuário ${usuario.nome}?`);
     if (confirmacao) {
-      console.log(`Ação "${acao}" confirmada para o usuário:`, usuario);
-      // Aqui você pode implementar a lógica para realizar a ação
+
+      usuario.ativo = true;
+      if (acao === 'inativar') {
+        usuario.ativo = false;
+      }
+
+      this.usuariosApiService.atualizarUsuario(usuario).subscribe({
+        next: () => {
+          alert(`${acao} usuário realizado com sucesso`);
+        },
+        error: () => {
+          alert(`Erro ao ${acao} usuário`);
+        },
+        complete: () => {
+          this.carregarUsuarios(0, 10);
+        }
+      });
     }
   }
 }

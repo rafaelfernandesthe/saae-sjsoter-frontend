@@ -34,3 +34,23 @@ table {
 .mat-header-cell {
   font-weight: bold;
 }
+
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Estilo para alinhar os botões horizontalmente */
+.filter-actions {
+  display: flex;
+  gap: 16px; /* Espaçamento entre os botões */
+  justify-content: flex-start; /* Alinha os botões à esquerda */
+  margin-top: 16px; /* Espaçamento acima dos botões */
+}
+
+/* Define um tamanho uniforme para os botões */
+.filter-actions button {
+  flex: 1; /* Faz com que os botões tenham o mesmo tamanho */
+  max-width: 150px; /* Limita o tamanho máximo dos botões */
+}

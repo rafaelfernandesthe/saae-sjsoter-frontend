@@ -25,6 +25,8 @@ export class AuthenticatedLayoutComponent {
 
   constructor(private router: Router) {}
 
+  user = JSON.parse(localStorage.getItem('usuario#saae-sjsoter') || '{}');
+
   title = 'saae-sjsoter-frontend';
 
   getDate() : Date {

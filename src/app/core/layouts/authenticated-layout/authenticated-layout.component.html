@@ -11,6 +11,12 @@
         </button>
         <span class="system-title">SAAE - Sistema de Controle de Contas</span>
         <span class="spacer"></span>
+        <span class="user-info">
+          <mat-icon>person</mat-icon>
+          <span class="user-name">{{user.nome}}</span>
+          <span> | </span>
+          <span class="user-email">{{user.usuario}}</span>
+        </span>
         <button class="menu-icon-button" mat-icon-button (click)="logout()">
             <mat-icon class="menu-icon">logout</mat-icon>
             <span class="menu-icon-text">Sair</span>

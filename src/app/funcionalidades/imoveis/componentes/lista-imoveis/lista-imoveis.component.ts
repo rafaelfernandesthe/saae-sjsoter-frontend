@@ -108,6 +108,6 @@ export class ListaImoveisComponent {
   }
 
   atualizarCadastro(imovel: any): void {
-    console.log('Atualizar cadastro clicado para o imóvel:', imovel);
+    this.router.navigate(['imoveis/' + imovel.id]);
   }
 }

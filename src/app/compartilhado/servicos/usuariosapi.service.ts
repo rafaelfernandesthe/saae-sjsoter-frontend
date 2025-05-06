@@ -17,7 +17,16 @@ export class UsuariosApiService {
   }
 
   atualizarUsuario(usuario: any): Observable<any> {
-    return this.http.put<any>(`${this.pathBase}/${usuario.id}`, usuario);
+    var usuarioReq = {
+      "id": usuario.id,
+      "nome": usuario.nome,
+      "cpf": usuario.cpf,
+      "telefone": usuario.telefone,
+      "email": usuario.email,
+      "tipo": usuario.tipo,
+      "ativo": usuario.ativo
+    }
+    return this.http.put<any>(`${this.pathBase}/${usuario.id}`, usuarioReq);
   }
 
   getUsuarios(params: any): Observable<any> {
