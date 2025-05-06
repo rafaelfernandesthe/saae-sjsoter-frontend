@@ -1,1 +1,53 @@
-<p>detalhe-imovel works!</p>
+<mat-card>
+    <mat-card-title>{{ modoEdicao ? 'Editar Imóvel' : 'Novo Imóvel' }}</mat-card-title>
+    <mat-card-content>
+      <form>
+  
+        <mat-form-field appearance="outline" class="campo">
+          <mat-label>Tipo</mat-label>
+          <mat-select [(ngModel)]="imovel.tipo" name="tipo">
+            <mat-option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="campo">
+          <mat-label>Rua</mat-label>
+          <input matInput [(ngModel)]="imovel.rua" name="rua" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="campo">
+          <mat-label>Número</mat-label>
+          <input matInput [(ngModel)]="imovel.numero" name="numero" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="campo">
+          <mat-label>Bairro</mat-label>
+          <input matInput [(ngModel)]="imovel.bairro" name="bairro" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="campo">
+          <mat-label>Nome do Proprietário</mat-label>
+          <input matInput [(ngModel)]="imovel.nome" name="nome" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="campo">
+          <mat-label>CPF/CNPJ</mat-label>
+          <input matInput [(ngModel)]="imovel.cpf_cnpj" name="cpf_cnpj" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="campo">
+          <mat-label>Descrição</mat-label>
+          <textarea matInput rows="3" [(ngModel)]="imovel.descricao" name="descricao"></textarea>
+        </mat-form-field>
+  
+      </form>
+    </mat-card-content>
+  
+    <mat-card-actions>
+      <button mat-flat-button color="primary" (click)="salvarImovel()">
+        {{ modoEdicao ? 'Atualizar' : 'Salvar' }}
+      </button>
+      <button mat-stroked-button color="accent" (click)="voltar()">Voltar</button>
+    </mat-card-actions>
+  </mat-card>
+  

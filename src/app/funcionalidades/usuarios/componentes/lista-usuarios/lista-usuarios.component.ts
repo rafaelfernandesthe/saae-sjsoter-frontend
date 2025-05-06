@@ -6,6 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { FormatacaoService } from '../../../../compartilhado/servicos/formatacao.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista-usuarios',
@@ -21,7 +22,7 @@ import { FormatacaoService } from '../../../../compartilhado/servicos/formatacao
   })
 export class ListaUsuariosComponent {
 
-  constructor(protected formatacaoService: FormatacaoService) { }
+  constructor(protected formatacaoService: FormatacaoService, private router: Router) { }
 
   // Dados mockados de usuários
   usuarios = [
@@ -35,7 +36,7 @@ export class ListaUsuariosComponent {
 
   adicionarUsuario(): void {
     console.log('Adicionar usuário clicado');
-    // Aqui você pode implementar a lógica para abrir um modal ou redirecionar para a página de cadastro
+    this.router.navigate(['usuarios/novo']);
   }
 
   // Método para confirmar ações

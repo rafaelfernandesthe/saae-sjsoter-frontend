@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BackendApiService } from '../../../../compartilhado/servicos/backendapi.service';
 import { FormatacaoService } from '../../../../compartilhado/servicos/formatacao.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista-imoveis',
@@ -44,7 +45,7 @@ export class ListaImoveisComponent {
   tipos = ['CASA', 'PONTO_COMERCIAL', 'IGREJA', 'TERRENO', 'POSTO_DE_COMBUSTIVEL'];
   displayedColumns: string[] = ['tipo', 'rua', 'numero', 'bairro', 'proprietario', 'cpfCnpj', 'descricao', 'acoes'];
 
-  constructor(protected formatacaoService: FormatacaoService, protected backendApiService: BackendApiService) {}
+  constructor(protected formatacaoService: FormatacaoService, protected backendApiService: BackendApiService,private router: Router) {}
 
   ngOnInit(): void {
     this.carregarImoveis(0, 10);
@@ -87,6 +88,7 @@ export class ListaImoveisComponent {
   }
 
   adicionarImovel(): void {
+    this.router.navigate(['imoveis/novo']);
     console.log('Adicionar imóvel clicado');
   }
 
