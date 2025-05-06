@@ -1,6 +1,6 @@
 <mat-toolbar class="menu-header center-text" color="primary">SAAE</mat-toolbar>
 <mat-nav-list class="menu-list">
-  <a mat-list-item class="menu-item" routerLink="/dashboard" routerLinkActive="active">
+  <a mat-list-item class="menu-item" *ngIf="isAuthorized(['ADMIN', 'SAAE', 'PREFEITURA'])" routerLink="/dashboard" routerLinkActive="active">
     <mat-icon>dashboard</mat-icon>
     <span>Dashboard</span>
   </a>

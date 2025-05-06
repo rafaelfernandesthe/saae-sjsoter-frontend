@@ -35,7 +35,7 @@ export class DetalheUsuarioComponent implements OnInit {
   };
 
   modoEdicao = false;
-  permissoes: string[] = ['ADMIN', 'SAAE', 'PREFEITURA'];
+  permissoes: string[] = ['ADMIN', 'SAAE', 'PREFEITURA', 'COMUM'];
 
   constructor(private route: ActivatedRoute, private router: Router, private usuariosApiService: UsuariosApiService) {}
   ngOnInit(): void {

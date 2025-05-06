@@ -20,10 +20,10 @@ import { MatListModule } from '@angular/material/list';
   ],
 })
 export class BarraNavegacaoComponent {
-  userProfile: string = 'ADMIN'; // Mock do perfil do usuário logado
-
+  
   isAuthorized(allowedProfiles: string[]): boolean {
-    const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+    const usuario = JSON.parse(localStorage.getItem('usuario#saae-sjsoter') || '{}');
     return allowedProfiles.includes(usuario.perfil);
   }
+  
 }

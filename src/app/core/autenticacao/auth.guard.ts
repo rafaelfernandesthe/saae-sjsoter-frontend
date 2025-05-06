@@ -5,7 +5,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   // Verifica se o código está sendo executado no navegador
-  if (typeof window !== 'undefined' && localStorage.getItem('usuario')) {
+  if (typeof window !== 'undefined' && localStorage.getItem('usuario#saae-sjsoter')) {
     return true; // Usuário autenticado
   }
 

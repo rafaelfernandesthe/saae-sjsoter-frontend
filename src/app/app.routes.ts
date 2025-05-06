@@ -5,7 +5,7 @@ import { AuthenticatedLayoutComponent } from './core/layouts/authenticated-layou
 export const appRoutes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {
@@ -18,6 +18,11 @@ export const appRoutes: Routes = [
     component: AuthenticatedLayoutComponent, // Usa o layout autenticado
     canActivate: [authGuard],
     children: [
+      {
+        path: 'home',
+        loadComponent: () =>
+          import('./funcionalidades/home/home.component').then((m) => m.HomeComponent),
+      },
       {
         path: 'dashboard',
         loadChildren: () =>
@@ -64,6 +69,6 @@ export const appRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'dashboard',
+    redirectTo: 'home',
   },
 ];

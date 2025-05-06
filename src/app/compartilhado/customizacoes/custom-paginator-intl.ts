@@ -13,6 +13,6 @@ export class CustomPaginatorIntl extends MatPaginatorIntl {
     }
     const startIndex = page * pageSize;
     const endIndex = Math.min(startIndex + pageSize, length);
-    return `${startIndex + 1} - ${endIndex} de ${length}`;
+    return `(Pág. ${page + 1}) ${startIndex + 1} - ${endIndex} de ${length}`;
   };
 }

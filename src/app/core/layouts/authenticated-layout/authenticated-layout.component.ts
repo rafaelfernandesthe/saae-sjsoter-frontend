@@ -33,7 +33,7 @@ export class AuthenticatedLayoutComponent {
 
   logout(): void {
     // Remove o usuário do localStorage
-    localStorage.removeItem('usuario');
+    localStorage.removeItem('usuario#saae-sjsoter');
 
     // Redireciona para a tela de login
     this.router.navigate(['/login']);

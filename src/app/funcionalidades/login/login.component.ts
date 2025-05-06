@@ -31,8 +31,9 @@ export class LoginComponent {
         const nome = payload.nome;
         const perfil = payload.perfil;
 
-        localStorage.setItem('usuario', JSON.stringify({ usuario, nome, perfil, token }));
-        this.router.navigate(['/dashboard']);
+        localStorage.setItem('usuario#saae-sjsoter', JSON.stringify({ usuario, nome, perfil, token }));
+
+        this.router.navigate(['/home']);
       },
       error: () => {
         alert('Usuário ou senha inválidos!');
