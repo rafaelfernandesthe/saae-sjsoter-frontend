@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
+import { NgModule } from '@angular/core';
 
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { CustomPaginatorIntl } from '../../compartilhado/customizacoes/custom-paginator-intl';
 import { UsuariosRoutingModule } from './usuarios-routing.module';
 
 
@@ -11,6 +11,7 @@ import { UsuariosRoutingModule } from './usuarios-routing.module';
   imports: [
     CommonModule,
     UsuariosRoutingModule
-  ]
+  ],
+  providers: [{ provide: MatPaginatorIntl, useClass: CustomPaginatorIntl }],
 })
 export class UsuariosModule { }

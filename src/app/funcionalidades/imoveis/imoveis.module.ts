@@ -1,18 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { ImoveisRoutingModule } from './imoveis-routing.module';
-import { HttpClientModule } from '@angular/common/http';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomPaginatorIntl } from '../../compartilhado/customizacoes/custom-paginator-intl';
+import { ImoveisRoutingModule } from './imoveis-routing.module';
 
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    ImoveisRoutingModule,
-    HttpClientModule
+    ImoveisRoutingModule
   ],
   providers: [{ provide: MatPaginatorIntl, useClass: CustomPaginatorIntl }],
 })
