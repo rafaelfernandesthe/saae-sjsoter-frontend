@@ -1,1 +1,35 @@
-<p>detalhe-taxa works!</p>
+<mat-card>
+    <h2>{{ modoEdicao ? 'Editar Taxa' : 'Nova Taxa' }}</h2>
+  
+    <!-- Nome -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Nome</mat-label>
+      <input matInput [(ngModel)]="taxa.nome" name="nome" required>
+    </mat-form-field>
+  
+    <!-- Descrição -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Descrição</mat-label>
+      <input matInput [(ngModel)]="taxa.descricao" name="descricao">
+    </mat-form-field>
+  
+    <!-- Tipo -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Tipo</mat-label>
+      <mat-select [(ngModel)]="taxa.tipo" name="tipo" required>
+        <mat-option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <!-- Valor -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Valor</mat-label>
+      <input matInput type="number" [(ngModel)]="taxa.valorAplicado" name="valor" required>
+    </mat-form-field>
+  
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>
+      <button mat-button color="warn" (click)="cancelar()">Cancelar</button>
+    </div>
+  </mat-card>
+  

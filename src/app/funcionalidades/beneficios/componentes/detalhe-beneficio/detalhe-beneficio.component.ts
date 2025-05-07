@@ -58,7 +58,7 @@ export class DetalheBeneficioComponent implements OnInit {
   }
 
   carregarBeneficio(id: number): void {
-    this.beneficioApiService.getBeneficioById(id).subscribe({
+    this.beneficioApiService.buscarPorId(id).subscribe({
       next: (res) => {
         this.beneficioForm.patchValue(res);  // Preenche o formulário com os dados do benefício
       },
@@ -73,7 +73,7 @@ export class DetalheBeneficioComponent implements OnInit {
       const beneficioData = this.beneficioForm.value;
       if (this.beneficioId) {
         // Atualiza o benefício
-        this.beneficioApiService.atualizarBeneficio({ ...beneficioData, id: this.beneficioId }).subscribe({
+        this.beneficioApiService.atualizar({ ...beneficioData, id: this.beneficioId }).subscribe({
           next: () => {
             this.snackBar.open('Benefício atualizado com sucesso', 'Fechar', { duration: 3000 });
             this.router.navigate(['/beneficios']);
@@ -84,7 +84,7 @@ export class DetalheBeneficioComponent implements OnInit {
         });
       } else {
         // Cria um novo benefício
-        this.beneficioApiService.salvarBeneficio(beneficioData).subscribe({
+        this.beneficioApiService.salvar(beneficioData).subscribe({
           next: () => {
             this.snackBar.open('Benefício criado com sucesso', 'Fechar', { duration: 3000 });
             this.router.navigate(['/beneficios']);

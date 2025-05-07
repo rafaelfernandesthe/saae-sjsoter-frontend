@@ -7,41 +7,32 @@ import { Observable } from 'rxjs';
 })
 export class BeneficioApiService {
 
-  private pathBase = '/api/beneficios'; // URL base para a API de benefícios
+  private pathBase = '/api/beneficios';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Método para salvar um novo benefício
-  salvarBeneficio(beneficio: any): Observable<any> {
-    return this.http.post<any>(this.pathBase, beneficio);  // Envia um POST para salvar o benefício
+  // Salva um novo benefício
+  salvar(beneficio: any): Observable<any> {
+    return this.http.post<any>(this.pathBase, beneficio);
   }
 
-  // Método para atualizar um benefício existente
-  atualizarBeneficio(beneficio: any): Observable<any> {
-    return this.http.put<any>(`${this.pathBase}/${beneficio.id}`, beneficio);  // Envia um PUT para atualizar o benefício
+  // Atualiza um benefício existente
+  atualizar(beneficio: any): Observable<any> {
+    return this.http.put<any>(`${this.pathBase}/${beneficio.id}`, beneficio);
   }
 
-  // Método para obter a lista de benefícios com parâmetros de paginação
-  getBeneficios(params: any): Observable<any> {
-    let httpParams = new HttpParams();
-    if (params) {
-      httpParams = httpParams
-        .set('page', params.page)
-        .set('size', params.size);
-      if (params.sort) {
-        httpParams = httpParams.set('sort', params.sort);
-      }
-    }
-    return this.http.get<any>(this.pathBase, { params: httpParams });
-  }
-  
-  // Método para obter um benefício específico pelo ID
-  getBeneficioById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.pathBase}/${id}`);  // Envia uma requisição GET para buscar o benefício por ID
+  // Lista benefícios com paginação e ordenação (params opcionais)
+  listar(params?: { [param: string]: string }): Observable<any> {
+    return this.http.get<any>(this.pathBase, { params });
   }
 
-  // Método para excluir um benefício
-  deleteBeneficio(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.pathBase}/${id}`);  // Envia uma requisição DELETE para excluir o benefício
+  // Busca um benefício pelo ID
+  buscarPorId(id: number): Observable<any> {
+    return this.http.get<any>(`${this.pathBase}/${id}`);
+  }
+
+  // Exclui um benefício
+  excluir(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.pathBase}/${id}`);
   }
 }

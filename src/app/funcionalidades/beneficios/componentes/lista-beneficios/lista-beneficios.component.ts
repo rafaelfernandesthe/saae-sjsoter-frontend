@@ -1,15 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-
-import { BeneficioApiService } from '../../../../compartilhado/servicos/beneficioapi.service';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { Router, RouterModule } from '@angular/router';
-import { MatSort, MatSortModule } from '@angular/material/sort';
 
+import { BeneficioApiService } from '../../../../compartilhado/servicos/beneficioapi.service';
 
 @Component({
   selector: 'app-lista-beneficios',
@@ -18,73 +17,70 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
   styleUrls: ['./lista-beneficios.component.scss'],
   imports: [
     CommonModule,
-    MatButtonModule,
-    MatIconModule,
+    RouterModule,
     MatTableModule,
-    MatCardModule,
     MatPaginatorModule,
     MatSortModule,
-    RouterModule
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule
   ]
-  
 })
-export class ListaBeneficiosComponent implements OnInit {
-
-  beneficios = new MatTableDataSource<any>([]);
+export class ListaBeneficiosComponent implements OnInit, AfterViewInit {
+  beneficios = new MatTableDataSource<any>([]);  // Usando 'any' para dados sem modelo
   displayedColumns: string[] = ['nome', 'descricao', 'tipo', 'desconto', 'acoes'];
   totalRegistros = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private beneficioApiService: BeneficioApiService, private router: Router) {}
+  constructor(
+    private beneficioApiService: BeneficioApiService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.carregarBeneficios(0, 10);
+    this.carregarBeneficios();  // Carregar benefícios diretamente
   }
 
-  carregarBeneficios(pageIndex: number, pageSize: number): void {
-    const params = {
-      page: pageIndex.toString(),
-      size: pageSize.toString(),
-      sort: 'nome,asc'
-    };
-  
-    this.beneficioApiService.getBeneficios(params).subscribe({
+  ngAfterViewInit(): void {
+    this.beneficios.paginator = this.paginator;  // Atribui paginator ao MatTableDataSource
+    this.beneficios.sort = this.sort;  // Atribui o MatSort ao MatTableDataSource
+  }
+
+  carregarBeneficios(): void {
+    this.beneficioApiService.listar().subscribe({
       next: (res) => {
-        this.beneficios.data = res.content;
-        this.totalRegistros = res.totalElements;
-        this.beneficios.paginator = this.paginator;
-        this.beneficios.sort = this.sort;
+        if (res.content) {
+          this.beneficios.data = res.content;  // Atualiza a lista de benefícios
+          this.totalRegistros = res.totalElements;  // Atualiza o total de registros
+        }
       },
       error: (error) => {
-        console.error('Erro ao carregar benefícios', error);
+        console.error('Erro ao carregar benefícios:', error);  // Exibe o erro no console
       }
     });
   }
 
-  // Método para adicionar um novo benefício
   adicionarBeneficio(): void {
-    this.router.navigate(['beneficios/novo']);  // Redireciona para a página de adicionar benefício
+    this.router.navigate(['beneficios/novo']);
   }
 
-  // Método para editar um benefício existente
   editarBeneficio(beneficio: any): void {
-    this.router.navigate(['beneficios/editar', beneficio.id]);  // Redireciona para a página de editar benefício
+    this.router.navigate(['beneficios/editar', beneficio.id]);
   }
 
-  // Método para excluir um benefício
   excluirBeneficio(beneficio: any): void {
-    if (confirm('Tem certeza que deseja excluir este benefício?')) {
-      this.beneficioApiService.deleteBeneficio(beneficio.id).subscribe(
-        () => {
+    if (confirm(`Tem certeza que deseja excluir o benefício "${beneficio.nome}"?`)) {
+      this.beneficioApiService.excluir(beneficio.id).subscribe({
+        next: () => {
           console.log('Benefício excluído com sucesso');
-          this.carregarBeneficios(0, 10);  // Recarrega a lista após a exclusão
+          this.carregarBeneficios(); // Recarregar a lista de benefícios após exclusão
         },
-        (error) => {
-          console.error('Erro ao excluir benefício', error);
+        error: (error) => {
+          console.error('Erro ao excluir benefício:', error);
         }
-      );
+      });
     }
   }
 }
