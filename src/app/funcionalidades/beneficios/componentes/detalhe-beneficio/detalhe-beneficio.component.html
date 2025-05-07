@@ -33,9 +33,9 @@
       <!-- Desconto Aplicado -->
       <mat-form-field appearance="fill" class="campo">
         <mat-label>Desconto Aplicado</mat-label>
-        <input matInput formControlName="desconto" type="number" min="0" required />
-        <mat-error *ngIf="beneficioForm.get('desconto')?.hasError('required')">Desconto é obrigatório</mat-error>
-        <mat-error *ngIf="beneficioForm.get('desconto')?.hasError('min')">Desconto não pode ser negativo</mat-error>
+        <input matInput formControlName="descontoAplicado" type="number" min="0" required />
+        <mat-error *ngIf="beneficioForm.get('descontoAplicado')?.hasError('required')">Desconto é obrigatório</mat-error>
+        <mat-error *ngIf="beneficioForm.get('descontoAplicado')?.hasError('min')">Desconto não pode ser negativo</mat-error>
       </mat-form-field>
 
       <!-- Ações -->

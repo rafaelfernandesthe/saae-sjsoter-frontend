@@ -49,7 +49,7 @@ export class ListaBeneficiosComponent implements OnInit {
       size: pageSize.toString(),
       sort: 'nome,asc'
     };
-
+  
     this.beneficioApiService.getBeneficios(params).subscribe({
       next: (res) => {
         this.beneficios.data = res.content;
