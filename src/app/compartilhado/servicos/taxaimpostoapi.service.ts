@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class TaxaImpostoApiService {
 
-  private pathBase = '/api/taxaImposto';
+  private pathBase = '/api/taxasImpostos';
 
   constructor(private http: HttpClient) {}
 

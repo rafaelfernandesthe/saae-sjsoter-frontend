@@ -32,7 +32,13 @@
       <!-- Desconto -->
       <ng-container matColumnDef="desconto">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Desconto Aplicado </th>
-        <td mat-cell *matCellDef="let beneficio"> {{ beneficio.descontoAplicado }} </td>
+        <td mat-cell *matCellDef="let beneficio"> {{beneficio.tipo === 'VALOR' ? (beneficio.descontoAplicado | currency:'BRL') : (beneficio.descontoAplicado | number:'1.2-2') + '%'}} </td>
+      </ng-container>
+
+      <!-- Status -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let beneficio"> {{ beneficio.status }} </td>
       </ng-container>
 
       <!-- Ações -->

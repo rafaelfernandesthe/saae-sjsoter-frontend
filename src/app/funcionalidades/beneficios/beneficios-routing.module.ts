@@ -6,7 +6,7 @@ import { DetalheBeneficioComponent } from './componentes/detalhe-beneficio/detal
 const routes: Routes = [
   { path: '', component: ListaBeneficiosComponent },
   { path: 'novo', component: DetalheBeneficioComponent },
-  { path: 'editar', component: DetalheBeneficioComponent }, // Rota para editar
+  { path: ':id', component: DetalheBeneficioComponent }, // Rota para editar
 ];
 
 @NgModule({

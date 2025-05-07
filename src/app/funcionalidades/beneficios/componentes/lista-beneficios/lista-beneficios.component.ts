@@ -28,7 +28,7 @@ import { BeneficioApiService } from '../../../../compartilhado/servicos/benefici
 })
 export class ListaBeneficiosComponent implements OnInit, AfterViewInit {
   beneficios = new MatTableDataSource<any>([]);  // Usando 'any' para dados sem modelo
-  displayedColumns: string[] = ['nome', 'descricao', 'tipo', 'desconto', 'acoes'];
+  displayedColumns: string[] = ['nome', 'descricao', 'tipo', 'desconto', 'status', 'acoes'];
   totalRegistros = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -49,11 +49,12 @@ export class ListaBeneficiosComponent implements OnInit, AfterViewInit {
   }
 
   carregarBeneficios(): void {
+
     this.beneficioApiService.listar().subscribe({
       next: (res) => {
-        if (res.content) {
-          this.beneficios.data = res.content;  // Atualiza a lista de benefícios
-          this.totalRegistros = res.totalElements;  // Atualiza o total de registros
+        if (res) {
+          this.beneficios = res;  // Atualiza a lista de benefícios
+          this.totalRegistros = res.size;  // Atualiza o total de registros
         }
       },
       error: (error) => {
@@ -67,7 +68,7 @@ export class ListaBeneficiosComponent implements OnInit, AfterViewInit {
   }
 
   editarBeneficio(beneficio: any): void {
-    this.router.navigate(['beneficios/editar', beneficio.id]);
+    this.router.navigate(['beneficios/', beneficio.id]);
   }
 
   excluirBeneficio(beneficio: any): void {

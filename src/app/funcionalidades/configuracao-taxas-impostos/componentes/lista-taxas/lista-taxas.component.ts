@@ -6,16 +6,18 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-lista-taxas',
   templateUrl: './lista-taxas.component.html',
   styleUrls: ['./lista-taxas.component.scss'],
-  imports: [MatTableModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule],
+  imports: [FormsModule, CommonModule, MatTableModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule],
 })
 export class ListaTaxasComponent implements OnInit {
   taxas: any[] = [];
-  displayedColumns: string[] = ['nome', 'descricao', 'tipo', 'valor', 'acoes'];
+  displayedColumns: string[] = ['nome', 'descricao', 'tipo', 'valor', 'status', 'acoes'];
 
   constructor(
     private router: Router,

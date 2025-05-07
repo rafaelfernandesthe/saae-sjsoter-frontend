@@ -38,6 +38,15 @@
         <mat-error *ngIf="beneficioForm.get('descontoAplicado')?.hasError('min')">Desconto não pode ser negativo</mat-error>
       </mat-form-field>
 
+      <!-- Descrição -->
+      <mat-form-field appearance="fill" class="campo">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status" required>
+          <mat-option value="ATIVO">ATIVO</mat-option>
+          <mat-option value="INATIVO">INATIVO</mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <!-- Ações -->
       <div class="botoes">
         <button mat-raised-button color="primary" type="submit" [disabled]="beneficioForm.invalid">Salvar</button>

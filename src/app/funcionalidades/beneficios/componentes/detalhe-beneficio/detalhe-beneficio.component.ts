@@ -45,6 +45,7 @@ export class DetalheBeneficioComponent implements OnInit {
       descricao: ['', Validators.required],
       tipo: ['', Validators.required],
       descontoAplicado: ['', [Validators.required, Validators.min(0)]],
+      status: ['', Validators.required],
     });
   }
 
