@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+
 import { BeneficioApiService } from '../../../../compartilhado/servicos/beneficioapi.service';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-import { HttpClient } from '@angular/common/http';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { Router, RouterModule } from '@angular/router';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+
 
 @Component({
   selector: 'app-lista-beneficios',
@@ -19,54 +21,70 @@ import { HttpClient } from '@angular/common/http';
     MatButtonModule,
     MatIconModule,
     MatTableModule,
-    MatCardModule
+    MatCardModule,
+    MatPaginatorModule,
+    MatSortModule,
+    RouterModule
   ]
+  
 })
 export class ListaBeneficiosComponent implements OnInit {
-  beneficios: any[] = [];
-  totalRegistros: number = 0;
-  displayedColumns: string[] = ['nome', 'descricao', 'tipo', 'desconto', 'acoes'];
-  params: any = { page: 0, size: 10 };
 
-  constructor(
-    private http: HttpClient,
-    private beneficioApiService: BeneficioApiService,
-    private snackBar: MatSnackBar,
-    private router: Router
-  ) {}
+  beneficios = new MatTableDataSource<any>([]);
+  displayedColumns: string[] = ['nome', 'descricao', 'tipo', 'desconto', 'acoes'];
+  totalRegistros = 0;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(private beneficioApiService: BeneficioApiService, private router: Router) {}
 
   ngOnInit(): void {
-    this.carregarBeneficios();
+    this.carregarBeneficios(0, 10);
   }
 
-  carregarBeneficios(): void {
-    this.beneficioApiService.getBeneficios(this.params).subscribe({
+  carregarBeneficios(pageIndex: number, pageSize: number): void {
+    const params = {
+      page: pageIndex.toString(),
+      size: pageSize.toString(),
+      sort: 'nome,asc'
+    };
+
+    this.beneficioApiService.getBeneficios(params).subscribe({
       next: (res) => {
-        this.beneficios = res.content;
+        this.beneficios.data = res.content;
         this.totalRegistros = res.totalElements;
+        this.beneficios.paginator = this.paginator;
+        this.beneficios.sort = this.sort;
       },
-      error: () => {
-        this.snackBar.open('Erro ao carregar benefícios', 'Fechar', { duration: 3000 });
+      error: (error) => {
+        console.error('Erro ao carregar benefícios', error);
       }
     });
   }
 
-  // Método para adicionar benefício
+  // Método para adicionar um novo benefício
   adicionarBeneficio(): void {
-    this.router.navigate(['/beneficios/novo']);
+    this.router.navigate(['beneficios/novo']);  // Redireciona para a página de adicionar benefício
   }
 
-  // Método para editar benefício
+  // Método para editar um benefício existente
   editarBeneficio(beneficio: any): void {
-    this.router.navigate([`/beneficios/editar/${beneficio.id}`]);
+    this.router.navigate(['beneficios/editar', beneficio.id]);  // Redireciona para a página de editar benefício
   }
 
-  // Método para excluir benefício
+  // Método para excluir um benefício
   excluirBeneficio(beneficio: any): void {
-    const confirmacao = confirm(`Você deseja realmente excluir o benefício "${beneficio.nome}"?`);
-    if (confirmacao) {
-      console.log('Excluir benefício confirmado para:', beneficio);
-      // Aqui você pode implementar a lógica para excluir o benefício
+    if (confirm('Tem certeza que deseja excluir este benefício?')) {
+      this.beneficioApiService.deleteBeneficio(beneficio.id).subscribe(
+        () => {
+          console.log('Benefício excluído com sucesso');
+          this.carregarBeneficios(0, 10);  // Recarrega a lista após a exclusão
+        },
+        (error) => {
+          console.error('Erro ao excluir benefício', error);
+        }
+      );
     }
   }
 }

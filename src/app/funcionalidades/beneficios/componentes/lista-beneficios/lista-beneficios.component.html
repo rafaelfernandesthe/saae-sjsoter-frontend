@@ -7,34 +7,35 @@
       </button>
     </div>
   </header>
-  <mat-card-content>
-    <table mat-table [dataSource]="beneficios" class="mat-elevation-z8">
 
-      <!-- Nome Column -->
+  <mat-card-content>
+    <table mat-table [dataSource]="beneficios" matSort class="mat-elevation-z8">
+
+      <!-- Nome -->
       <ng-container matColumnDef="nome">
-        <th mat-header-cell *matHeaderCellDef> Nome </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
         <td mat-cell *matCellDef="let beneficio"> {{ beneficio.nome }} </td>
       </ng-container>
 
-      <!-- Descrição Column -->
+      <!-- Descrição -->
       <ng-container matColumnDef="descricao">
-        <th mat-header-cell *matHeaderCellDef> Descrição </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
         <td mat-cell *matCellDef="let beneficio"> {{ beneficio.descricao }} </td>
       </ng-container>
 
-      <!-- Tipo Column -->
+      <!-- Tipo -->
       <ng-container matColumnDef="tipo">
-        <th mat-header-cell *matHeaderCellDef> Tipo </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
         <td mat-cell *matCellDef="let beneficio"> {{ beneficio.tipo }} </td>
       </ng-container>
 
-      <!-- Desconto Aplicado Column -->
+      <!-- Desconto -->
       <ng-container matColumnDef="desconto">
-        <th mat-header-cell *matHeaderCellDef> Desconto Aplicado </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Desconto Aplicado </th>
         <td mat-cell *matCellDef="let beneficio"> {{ beneficio.desconto }} </td>
       </ng-container>
 
-      <!-- Ações Column -->
+      <!-- Ações -->
       <ng-container matColumnDef="acoes">
         <th mat-header-cell *matHeaderCellDef> Ações </th>
         <td mat-cell *matCellDef="let beneficio">
@@ -47,9 +48,10 @@
         </td>
       </ng-container>
 
-      <!-- Table Header and Rows -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </mat-card-content>
 </mat-card>
