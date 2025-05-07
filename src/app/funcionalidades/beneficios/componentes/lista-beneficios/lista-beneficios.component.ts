@@ -1,44 +1,64 @@
+import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { BeneficioApiService } from '../../../../compartilhado/servicos/beneficioapi.service';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-lista-beneficios',
+  standalone: true,
   templateUrl: './lista-beneficios.component.html',
   styleUrls: ['./lista-beneficios.component.scss'],
   imports: [
-    MatTableModule,
-    MatCardModule,
+    CommonModule,
     MatButtonModule,
     MatIconModule,
-    MatTooltipModule
-  ],
+    MatTableModule,
+    MatCardModule
+  ]
 })
-export class ListaBeneficiosComponent {
-  // Dados mockados de benefícios
-  beneficios = [
-    { nome: 'Desconto Estudante', descricao: 'Desconto para estudantes', tipo: 'percentual', desconto: '15%' },
-    { nome: 'Desconto Idoso', descricao: 'Desconto para idosos acima de 60 anos', tipo: 'valor', desconto: 'R$ 50,00' },
-    { nome: 'Desconto Família', descricao: 'Desconto para famílias com mais de 3 membros', tipo: 'percentual', desconto: '10%' },
-  ];
-
-  // Colunas exibidas na tabela
+export class ListaBeneficiosComponent implements OnInit {
+  beneficios: any[] = [];
+  totalRegistros: number = 0;
   displayedColumns: string[] = ['nome', 'descricao', 'tipo', 'desconto', 'acoes'];
+  params: any = { page: 0, size: 10 };
+
+  constructor(
+    private http: HttpClient,
+    private beneficioApiService: BeneficioApiService,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.carregarBeneficios();
+  }
+
+  carregarBeneficios(): void {
+    this.beneficioApiService.getBeneficios(this.params).subscribe({
+      next: (res) => {
+        this.beneficios = res.content;
+        this.totalRegistros = res.totalElements;
+      },
+      error: () => {
+        this.snackBar.open('Erro ao carregar benefícios', 'Fechar', { duration: 3000 });
+      }
+    });
+  }
 
   // Método para adicionar benefício
   adicionarBeneficio(): void {
-    console.log('Adicionar benefício clicado');
-    // Aqui você pode implementar a lógica para abrir um modal ou redirecionar para a página de cadastro
+    this.router.navigate(['/beneficios/novo']);
   }
 
   // Método para editar benefício
   editarBeneficio(beneficio: any): void {
-    console.log('Editar benefício clicado para:', beneficio);
-    // Aqui você pode implementar a lógica para abrir um modal ou redirecionar para a página de edição
+    this.router.navigate([`/beneficios/editar/${beneficio.id}`]);
   }
 
   // Método para excluir benefício

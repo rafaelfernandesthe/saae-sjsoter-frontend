@@ -1,1 +1,48 @@
-<p>detalhe-beneficio works!</p>
+<mat-card class="beneficio-card">
+  <mat-card-header>
+    <mat-card-title>{{ beneficioId ? 'Editar Benefício' : 'Novo Benefício' }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="beneficioForm" (ngSubmit)="salvarBeneficio()">
+      
+      <!-- Nome -->
+      <mat-form-field appearance="fill" class="campo">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="nome" required />
+        <mat-error *ngIf="beneficioForm.get('nome')?.hasError('required')">Nome é obrigatório</mat-error>
+      </mat-form-field>
+
+      <!-- Descrição -->
+      <mat-form-field appearance="fill" class="campo">
+        <mat-label>Descrição</mat-label>
+        <input matInput formControlName="descricao" required />
+        <mat-error *ngIf="beneficioForm.get('descricao')?.hasError('required')">Descrição é obrigatória</mat-error>
+      </mat-form-field>
+
+      <!-- Tipo -->
+      <mat-form-field appearance="fill" class="campo">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="tipo" required>
+          <mat-option value="PERCENTUAL">Percentual</mat-option>
+          <mat-option value="VALOR">Valor</mat-option>
+        </mat-select>
+        <mat-error *ngIf="beneficioForm.get('tipo')?.hasError('required')">Tipo é obrigatório</mat-error>
+      </mat-form-field>
+
+      <!-- Desconto Aplicado -->
+      <mat-form-field appearance="fill" class="campo">
+        <mat-label>Desconto Aplicado</mat-label>
+        <input matInput formControlName="desconto" type="number" min="0" required />
+        <mat-error *ngIf="beneficioForm.get('desconto')?.hasError('required')">Desconto é obrigatório</mat-error>
+        <mat-error *ngIf="beneficioForm.get('desconto')?.hasError('min')">Desconto não pode ser negativo</mat-error>
+      </mat-form-field>
+
+      <!-- Ações -->
+      <div class="botoes">
+        <button mat-raised-button color="primary" type="submit" [disabled]="beneficioForm.invalid">Salvar</button>
+        <button mat-button (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

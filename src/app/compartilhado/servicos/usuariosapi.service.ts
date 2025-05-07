@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import path from 'path';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -36,5 +35,11 @@ export class UsuariosApiService {
   getUsuariosById(id: number): Observable<any> {
     return this.http.get<any>(`${this.pathBase}/${id}`);
   }
+
+  deleteUsuario(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.pathBase}/${id}`);
+
+  }
+
   
 }
